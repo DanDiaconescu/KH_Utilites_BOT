@@ -1,10 +1,14 @@
 import discord
 import find_players
+import threading
+from time import sleep
+import asyncio
+from discord.ext import tasks
 
 
 class ClanEmbed(discord.Embed):
     def __init__(self, clan_numbers):
-        super().__init__(title="CLAN LINKS", color=0xc75450 )
+        super().__init__(title="CLAN LINKS", color=0xc75450)
 
         self.url_dict = {
             'A': 'http://destiny2.ro/clana',
@@ -22,16 +26,18 @@ class ClanEmbed(discord.Embed):
             'X': [740857014439247902, 249290472189591554, 335821679953707019]
         }
 
-        self.set_author(name='Karpathian Horsemen', icon_url='https://cdn.discordapp.com/icons/710809754057834496/c1e14b8c875da15ad7f84409c5559c79.jpg')
+        self.set_author(name='Karpathian Horsemen',
+                        icon_url='https://cdn.discordapp.com/icons/710809754057834496/c1e14b8c875da15ad7f84409c5559c79.jpg')
         self.set_thumbnail(url='https://www.pngitem.com/pimgs/m/63-636562_join-us-won-t-you-hd-png-download.png')
 
         for clan in clan_numbers:
             ping_str = ' '.join([f'<@{user}>' for user in self.clan_admin[clan]])
             self.add_field(name='',
-                           value=f'Clan {"<:steam:886894682389508136>" if clan != "X" else "<:xbox:896241390005145651>"} [Karpathian Horsemen #{clan}]({self.url_dict[clan]}) **{f"{clan_numbers[clan]} free spaces" if clan_numbers[clan] != 0 else "FULL CLAN"}** \n Contact: {ping_str} \n {"—"*30} \n',
+                           value=f'Clan {"<:steam:886894682389508136>" if clan != "X" else "<:xbox:896241390005145651>"} [Karpathian Horsemen #{clan}]({self.url_dict[clan]}) **{f"{clan_numbers[clan]} free spaces" if clan_numbers[clan] != 0 else "FULL CLAN"}** \n Contact: {ping_str} \n {"—" * 30} \n',
                            inline=False)
 
-        self.set_footer(text='© Karpathian Horsemen', icon_url='https://cdn.discordapp.com/icons/710809754057834496/c1e14b8c875da15ad7f84409c5559c79.jpg')
+        self.set_footer(text='© Karpathian Horsemen',
+                        icon_url='https://cdn.discordapp.com/icons/710809754057834496/c1e14b8c875da15ad7f84409c5559c79.jpg')
 
 
 # async def ping_user(user_id, bot):
@@ -39,17 +45,41 @@ class ClanEmbed(discord.Embed):
 #     return user
 
 
-async def init(interaction):
+async def init(interaction, bot):
+    global msg_id
+
+    await interaction.response.send_message(content='Asteapta', ephemeral=True)
+    channel = interaction.channel
+
+    clan_numbers = get_clan_stats()
+
+    # await interaction.followup.send(content='', embed=ClanEmbed(clan_numbers))
+    # message_ = await interaction.original_response()
+
+    massage = await channel.send(content='', embed=ClanEmbed(clan_numbers))
+
+    do_refresh_embed.start(massage)
+
+    print(f'Finish \n{"—" * 10}')
+
+
+def get_clan_stats():
     clan_numbers = {}
     letters = ['A', 'B', 'C', 'F', 'X']
-    # await interaction.response.send_message('Asteapta.')
-    await interaction.response.defer()
 
     for letter in letters:
         clan_dict = find_players.get_destiny_clan_memebrs_by_letter(letter)
         clan_numbers[letter] = (100 - len(clan_dict))
+    return clan_numbers
 
-    await interaction.followup.send(content='', embed=ClanEmbed(clan_numbers))
-    print(f'Finish \n{"—"*10}')
+
+@tasks.loop(minutes=60)
+async def do_refresh_embed(message):
+    print(f'{"—" * 5} Refresh embed {"—" * 5}')
+    clan_numbers = get_clan_stats()
+    await message.edit(content='', embed=ClanEmbed(clan_numbers))
+
+
+
 
 
