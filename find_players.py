@@ -1,5 +1,6 @@
 import get_content
 from datetime import datetime
+import html
 
 # html_file = r''
 # files = [f for f in os.listdir('.') if os.path.isfile(f)]
@@ -21,7 +22,7 @@ def get_destiny_clan_memebrs_by_letter(letter = 'A'):
             if '<a href="/7/en/User/Profile/' in line:
                 name = line[line.find('>') + 1:]
                 name = name.replace(r'</a>', '')
-                name = name.replace(r'&#39;', "'")
+                name = html.unescape(name)
                 name = name.replace('\n', "")
                 name_list.append(name)
             if '<p class="user-bnet last-played-date js-last-played-date">Last Online:  <em data-datetime="' in line:

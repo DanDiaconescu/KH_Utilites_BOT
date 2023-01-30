@@ -60,7 +60,7 @@ async def privat_1(interaction: discord.Interaction, role_call: discord.Role):
 async def privat_2(interaction: discord.Interaction):
     print(f'{"—"*10} \nGenerare embed cu invinte link')
     author = interaction.user.roles
-    allowed_roles = [729027061322350762, 790256564110884864, 710818161867620412, 919993853933670480]
+    allowed_roles = [729027061322350762, 790256564110884864]
 
     is_allowed = 0
     for role in allowed_roles:

@@ -39,7 +39,7 @@ def compare_dicts(member_dict, _role_call_name):
     # print(letter)
     out_list = []
     clan_members = find_players.get_destiny_clan_memebrs_by_letter(letter)
-    member_list = [member[:-5] for member in member_dict]
+    member_list = [member[:-5] if member.find('#') > 1 else member for member in member_dict]
     for clan_member_name in clan_members:
         if clan_member_name in member_list:
             if days_between(clan_members[clan_member_name]) >= 90:
