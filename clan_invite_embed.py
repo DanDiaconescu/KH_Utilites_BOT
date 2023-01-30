@@ -75,7 +75,7 @@ def get_clan_stats():
 
 @tasks.loop(minutes=60)
 async def do_refresh_embed(message):
-    print(f'{"—" * 5} Refresh embed {"—" * 5}')
+    print(f'{"—" * 5} Refresh embed clan link {"—" * 5}')
     clan_numbers = get_clan_stats()
     await message.edit(content='', embed=ClanEmbed(clan_numbers))
 
