@@ -77,7 +77,7 @@ async def privat_2(interaction: discord.Interaction):
 
 @bot.event
 async def on_member_join(member):
-    print("membru nou ")
+    print(f"{'—'*5} Generare mesaj membru nou - {member.name} {'—'*5}")
     welcome_channel = await bot.fetch_channel(954083245522313266)
     welcome_txt = '''Salut {} ! O sa fie nevoie să iți dai register ca să poți avea acces la canalele de pe server. 
 Te rog să mergi pe <#938290015195238400> și să urmezi pașii de acolo. 
@@ -93,7 +93,7 @@ Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul 
 
     admin_list = ['<@&729027061322350762>', '<@&790256564110884864>', '<@&710818161867620412>']
     new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}')
-    await new_thread.send(content=f'Dacă întâmpini probleme, te rog să contactezi un administrator. {" ".join(admin_list)}')
+    await new_thread.send(content=f'Dacă întâmpini probleme, te rog să ne lași un mesaj aici și te vom asista în cel mai scurt timp posibil. {member.mention} {" ".join(admin_list)}')
 
 
 # TOKEN = str(environ.get('TOKEN'))  # sus la run dropdown file -> edit config -> enviroment variables -> TOKEN
