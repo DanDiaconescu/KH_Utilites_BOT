@@ -1,4 +1,5 @@
-from discord.ext import commands
+import datetime
+from discord.ext import commands, tasks
 import discord
 import bot_clan_members
 import clan_invite_embed
@@ -95,6 +96,10 @@ Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul 
     new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}')
     await new_thread.send(content=f'Dacă întâmpini probleme, te rog să ne lași un mesaj aici și te vom asista în cel mai scurt timp posibil. {member.mention} {" ".join(admin_list)}')
 
+
+@tasks.loop(minutes=40)
+async def do_refresh_bot():
+    print(f'[{datetime.datetime.now()}] Refresh BOT')
 
 # TOKEN = str(environ.get('TOKEN'))  # sus la run dropdown file -> edit config -> enviroment variables -> TOKEN
 if len(sys.argv) > 1:
