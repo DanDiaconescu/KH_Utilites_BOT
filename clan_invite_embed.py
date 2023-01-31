@@ -49,8 +49,10 @@ async def init(interaction, bot):
     # message_ = await interaction.original_response()
 
     massage = await channel.send(content='', embed=ClanEmbed(clan_numbers))
+    with open('embed_msg.txt', 'w') as f:
+        f.write(str(massage.id))
 
-    do_refresh_embed.start(massage)
+    # do_refresh_embed.start(massage)
 
     print(f'Finish \n{"—" * 10}')
 
@@ -65,11 +67,11 @@ def get_clan_stats():
     return clan_numbers
 
 
-@tasks.loop(minutes=60)
-async def do_refresh_embed(message):
-    print(f'{"—" * 5} Refresh embed clan link {"—" * 5}')
-    clan_numbers = get_clan_stats()
-    await message.edit(content='', embed=ClanEmbed(clan_numbers))
+# @tasks.loop(minutes=60)
+# async def do_refresh_embed(message):
+#     print(f'{"—" * 5} Refresh embed clan link {"—" * 5}')
+#     clan_numbers = get_clan_stats()
+#     await message.edit(content='', embed=ClanEmbed(clan_numbers))
 
 
 

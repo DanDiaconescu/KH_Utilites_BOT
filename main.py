@@ -22,8 +22,18 @@ class UtilsBot(commands.Bot):
             await command_tree.sync(guild=discord.Object(id=710809754057834496))
             self.synced = True
         cmd_channel = await bot.fetch_channel(797387549089333268)
+
         await cmd_channel.send(content='Bot online — Kind reminder sa restartezi embedul cu link-uri')
         print(f'Logged in as {self.user} (ID: {self.user.id})')
+        print('------')
+
+        print('Starting tasks...')
+        do_refresh_embed.start()
+        do_refresh_bot.start()
+        print('Done!')
+
+        print('------')
+        print('Bot ready!')
         print('------')
 
 
@@ -97,11 +107,39 @@ Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul 
     await new_thread.send(content=f'Dacă întâmpini probleme, te rog să ne lași un mesaj aici și te vom asista în cel mai scurt timp posibil. {member.mention} {" ".join(admin_list)}')
 
 
-@tasks.loop(minutes=40)
+@tasks.loop(minutes=60)
+async def do_refresh_embed():
+    print(f'{"—" * 5} Refresh embed clan link {"—" * 5}')
+    clan_invite_channel = await bot.fetch_channel(938290015195238400)
+    try:
+        with open('embed_msg.txt') as f:
+            msg_id = str(f.readline())
+    except:
+        print('[INIT] Nu exista log al embedului')
+        return
+
+    if not msg_id:
+        print('[INIT] Nu exista message_id al embedului')
+        return
+
+    try:
+        embed_message = await clan_invite_channel.fetch_message(msg_id)
+    except:
+        print('[INIT] Mesajul cu embed nu mai exista!')
+        return
+    clan_numbers = clan_invite_embed.get_clan_stats()
+    await embed_message.edit(content='', embed=clan_invite_embed.ClanEmbed(clan_numbers))
+
+
+@tasks.loop(minutes=2)
 async def do_refresh_bot():
-    print(f'[{datetime.datetime.now()}] Refresh BOT')
+    now = datetime.datetime.now()
+    log_time = now.strftime("%m/%d/%Y %H:%M:%S")
+    # print(f'[{log_time}] Refresh BOT')
 
 # TOKEN = str(environ.get('TOKEN'))  # sus la run dropdown file -> edit config -> enviroment variables -> TOKEN
 if len(sys.argv) > 1:
     TOKEN = sys.argv[1]
     bot.run(TOKEN)
+else:
+    bot.run('MTA2OTY3MzYwNjM1Mjc0NDU0OQ.GUXFwr.6mpOnn0os6KLRN7a-y5LYeDjb84TNn2lUancbA')
