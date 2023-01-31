@@ -1,8 +1,5 @@
 import discord
-import find_players
-import threading
-from time import sleep
-import asyncio
+import contact_destiny_api
 from discord.ext import tasks
 
 
@@ -40,11 +37,6 @@ class ClanEmbed(discord.Embed):
                         icon_url='https://cdn.discordapp.com/icons/710809754057834496/c1e14b8c875da15ad7f84409c5559c79.jpg')
 
 
-# async def ping_user(user_id, bot):
-#     user = bot.get_user(user_id)
-#     return user
-
-
 async def init(interaction, bot):
     global msg_id
 
@@ -68,7 +60,7 @@ def get_clan_stats():
     letters = ['A', 'B', 'C', 'F', 'X']
 
     for letter in letters:
-        clan_dict = find_players.get_destiny_clan_memebrs_by_letter(letter)
+        clan_dict = contact_destiny_api.get_destiny_clan_memebrs_by_letter(letter)
         clan_numbers[letter] = (100 - len(clan_dict))
     return clan_numbers
 

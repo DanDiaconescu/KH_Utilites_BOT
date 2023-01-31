@@ -1,10 +1,9 @@
-from discord.ext import commands, tasks
+from discord.ext import commands
 import discord
-from os import environ
 import bot_clan_members
 import clan_invite_embed
 import sys
-import threading
+from old import test_bot_curatenie
 
 
 class UtilsBot(commands.Bot):
@@ -22,6 +21,8 @@ class UtilsBot(commands.Bot):
         if not self.synced:
             await command_tree.sync(guild=discord.Object(id=710809754057834496))
             self.synced = True
+        cmd_channel = await bot.fetch_channel(797387549089333268)
+        await cmd_channel.send(content='Bot online — Kind reminder sa restartezi embedul cu link-uri')
         print(f'Logged in as {self.user} (ID: {self.user.id})')
         print('------')
 
@@ -75,9 +76,36 @@ async def privat_2(interaction: discord.Interaction):
         await interaction.response.send_message(content='Teapa', ephemeral=True)
 
 
+@bot.event
+async def on_member_join(member):
+    print("membru nou ")
+    welcome_channel = await bot.fetch_channel(954083245522313266)
+    welcome_txt = '''Salut {} ! O sa fie nevoie să iți dai register ca să poți avea acces la canalele de pe server. 
+Te rog să mergi pe <#938290015195238400> și să urmezi pașii de acolo. 
+Dacă dai join pe unul dintre clanuri, te rog să dai tag responsabililor de clan pe <#938294344853647431>. 
+Registerul cu Warmind (Charlemange) este obligatoriu in cadrul comunitatii noastre.
+Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul de mai jos. '''
+    new_message = await welcome_channel.send(content=welcome_txt.format(member.mention).replace('\n', ''))
+
+    # server = await bot.fetch_guild(710809754057834496)
+    # gatekeep = server.get_role(729027061322350762)
+    # tech = server.get_role(790256564110884864)
+    # admin = server.get_role(710818161867620412)
+
+    admin_list = ['<@&729027061322350762>', '<@&790256564110884864>', '<@&710818161867620412>']
+    new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}')
+    await new_thread.send(content=f'Dacă întâmpini probleme, te rog să contactezi un administrator. {" ".join(admin_list)}')
 
 
 # TOKEN = str(environ.get('TOKEN'))  # sus la run dropdown file -> edit config -> enviroment variables -> TOKEN
 if len(sys.argv) > 1:
     TOKEN = sys.argv[1]
     bot.run(TOKEN)
+else:
+    bot.run('MTA2OTY3MzYwNjM1Mjc0NDU0OQ.GIMmdi.PFTJGXqrmuYH1ZsHbdsJ84Ev632e6UAITE6nOY')
+
+# https://discord.com/api/oauth2/authorize?client_id=1068908188520423486&permissions=534723950656&scope=bot
+
+
+# Teste : https://discord.com/api/oauth2/authorize?client_id=1069673606352744549&permissions=534723950656&scope=bot
+#  Token teste : MTA2OTY3MzYwNjM1Mjc0NDU0OQ.GIMmdi.PFTJGXqrmuYH1ZsHbdsJ84Ev632e6UAITE6nOY
