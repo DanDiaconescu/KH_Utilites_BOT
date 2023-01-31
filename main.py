@@ -101,11 +101,3 @@ Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul 
 if len(sys.argv) > 1:
     TOKEN = sys.argv[1]
     bot.run(TOKEN)
-else:
-    bot.run('MTA2OTY3MzYwNjM1Mjc0NDU0OQ.GIMmdi.PFTJGXqrmuYH1ZsHbdsJ84Ev632e6UAITE6nOY')
-
-# https://discord.com/api/oauth2/authorize?client_id=1068908188520423486&permissions=534723950656&scope=bot
-
-
-# Teste : https://discord.com/api/oauth2/authorize?client_id=1069673606352744549&permissions=534723950656&scope=bot
-#  Token teste : MTA2OTY3MzYwNjM1Mjc0NDU0OQ.GIMmdi.PFTJGXqrmuYH1ZsHbdsJ84Ev632e6UAITE6nOY
