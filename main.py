@@ -3,7 +3,6 @@ import discord
 import bot_clan_members
 import clan_invite_embed
 import sys
-from old import test_bot_curatenie
 
 
 class UtilsBot(commands.Bot):
