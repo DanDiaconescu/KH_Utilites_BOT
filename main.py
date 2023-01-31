@@ -141,5 +141,3 @@ async def do_refresh_bot():
 if len(sys.argv) > 1:
     TOKEN = sys.argv[1]
     bot.run(TOKEN)
-else:
-    bot.run('MTA2OTY3MzYwNjM1Mjc0NDU0OQ.GUXFwr.6mpOnn0os6KLRN7a-y5LYeDjb84TNn2lUancbA')
