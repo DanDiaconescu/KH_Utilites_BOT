@@ -21,9 +21,10 @@ class UtilsBot(commands.Bot):
         if not self.synced:
             await command_tree.sync(guild=discord.Object(id=710809754057834496))
             self.synced = True
-        cmd_channel = await bot.fetch_channel(797387549089333268)
 
-        await cmd_channel.send(content='Bot online — Kind reminder sa restartezi embedul cu link-uri')
+        # cmd_channel = await bot.fetch_channel(797387549089333268)
+        # await cmd_channel.send(content='Bot online — Kind reminder sa restartezi embedul cu link-uri')
+        
         print(f'Logged in as {self.user} (ID: {self.user.id})')
         print('------')
 
