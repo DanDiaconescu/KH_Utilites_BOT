@@ -13,7 +13,7 @@ class UtilsBot(commands.Bot):
         intents.members = True
 
         # super().__init__(command_prefix=commands.when_mentioned_or('$'), intents=intents)  # se apeleaza la @
-        super().__init__(intents=intents, command_prefix=commands.when_mentioned_or('/'))
+        super().__init__(intents=intents, command_prefix=commands.when_mentioned_or('/test'))
         # sau cand e comanda cu $
         self.synced = False
 
