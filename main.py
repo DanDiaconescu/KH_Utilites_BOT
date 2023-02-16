@@ -128,7 +128,7 @@ async def privat_4(interaction:discord.Interaction, link: str):
     if not author_name:
         author_name = author.name
 
-    cmd_channel = await bot.fetch_channel(797387549089333268)
+    cmd_channel = await bot.fetch_channel(1075893874754588722)
 
     # await interaction.response.defer()
     # await interaction.response.send_message(content='Asteapta, te rog.', ephemeral=True)
