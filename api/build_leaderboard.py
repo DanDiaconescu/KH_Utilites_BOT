@@ -3,7 +3,6 @@ import json
 import pytz
 import discord
 
-import bungie_api
 
 # dest_api = bungie_api.DestinyAPI()
 
