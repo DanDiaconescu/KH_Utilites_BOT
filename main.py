@@ -6,7 +6,7 @@ import clan_invite_embed
 import sys
 from os import environ
 from day_one import bot_register_dayone
-from api import register_concurs
+from api import register_concurs, build_leaderboard, bungie_api
 
 
 class UtilsBot(commands.Bot):
@@ -138,6 +138,17 @@ async def privat_4(interaction:discord.Interaction, link: str):
         event_processing = False
 
 
+@command_tree.command(name='build_leaderboard', description='Setup leaderboard',
+                      guild=discord.Object(id=710809754057834496))
+async def privat_5(interaction:discord.Interaction, link: str):
+    print(f'{"—"*10} Initializare leaderboard competitie')
+    cmd_channel = await bot.fetch_channel(1075884178731700355)
+
+    interaction.response.send_message(content='Se trimite cand e', ephemeral=False)
+    dest_api = bungie_api.DestinyAPI()
+    await build_leaderboard.init(cmd_channel, dest_api)
+
+
 @bot.event
 async def on_member_join(member):
     print(f"{'—'*5} Generare mesaj membru nou - {member.name} {'—'*5}")
@@ -147,7 +158,7 @@ Te rog să mergi pe <#938290015195238400> și să urmezi pașii de acolo.
 Dacă dai join pe unul dintre clanuri, te rog să dai tag responsabililor de clan pe <#938294344853647431>. 
 Registerul cu Warmind (Charlemange) este obligatoriu in cadrul comunitatii noastre.
 Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul de mai jos. '''
-    # new_message = await welcome_channel.send(content=welcome_txt.format(member.mention).replace('\n', ''))
+    new_message = await welcome_channel.send(content=welcome_txt.format(member.mention).replace('\n', ''))
 
     # server = await bot.fetch_guild(710809754057834496)
     # gatekeep = server.get_role(729027061322350762)
@@ -155,8 +166,8 @@ Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul 
     # admin = server.get_role(710818161867620412)
 
     admin_list = ['<@&729027061322350762>', '<@&790256564110884864>', '<@&710818161867620412>']
-    # new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}')
-    # await new_thread.send(content=f'Dacă întâmpini probleme, te rog să ne lași un mesaj aici și te vom asista în cel mai scurt timp posibil. {member.mention} {" ".join(admin_list)}')
+    new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}')
+    await new_thread.send(content=f'Dacă întâmpini probleme, te rog să ne lași un mesaj aici și te vom asista în cel mai scurt timp posibil. {member.mention} {" ".join(admin_list)}')
 
 
 @tasks.loop(minutes=60)
@@ -196,3 +207,12 @@ if len(sys.argv) > 1:
 else:
     TOKEN = str(environ.get('TOKEN_TEST'))
     bot.run(TOKEN)
+
+
+@tasks.loop(minutes=100)
+async def do_refresh_leaderboard():
+    print(f'{"—" * 5} Refresh leaderboard clan link {"—" * 5}')
+    leaderboard_channel = await bot.fetch_channel(1075884178731700355)
+    dest_api = bungie_api.DestinyAPI()
+    await build_leaderboard.refresh_leaderboar(leaderboard_channel, dest_api)
+
