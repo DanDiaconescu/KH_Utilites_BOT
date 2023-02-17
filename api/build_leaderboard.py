@@ -108,13 +108,17 @@ async def refresh_leaderboar(channel, api_handler):
         print('[INIT] Nu exista message_id al leaderboard-ului')
         return
 
-    top_players = get_top_players(api_handler)
-
     try:
         message = await channel.fetch_message(msg_id)
     except:
         print('[INIT] Mesajul cu leaderborad nu mai exista!')
         return
+
+    if datetime.datetime.now() < datetime.datetime(2023, 2, 21, 19, 0, 0):
+        await message.edit(content='', embed=EmbedLeaderboardWarmup())
+        return
+
+    top_players = get_top_players(api_handler)
     await message.edit(content='', embed=EmbedLeaderboard(top_players))
 
 class EmbedLeaderboard(discord.Embed):
@@ -133,5 +137,32 @@ class EmbedLeaderboard(discord.Embed):
             self.add_field(name=f'{"—"*5}',
                            value=f"Reveniti pe data de 21/02",
                            inline=False)
+
+        self.set_footer(text='Organizat de comunitatea Karpathian Horsemen')
+
+
+class EmbedLeaderboardWarmup(discord.Embed):
+    def __init__(self):
+        super().__init__(title='Leaderboards — Speedrun', color=0x499c54)
+
+        self.add_field(name='Eveniment sponsorizat de:',
+                       value=f"<@534063567943499776>",
+                       inline=False)
+
+        self.add_field(name=f'{"—" * 5}',
+                       value=f"Concurenti:",
+                       inline=False)
+
+        with open('./api/competitie.json', 'r') as file:
+            #  escape in cazul in care e deja inscris
+            file_data = json.load(file)
+            for player in file_data["comp"]:
+                self.add_field(name=f'',
+                               value=f"[{player['displayName']}]({'https://destinytracker.com/destiny-2/profile/bungie/{}/sessions'.format(player['membershipId'])})",
+                               inline=False)
+
+        self.add_field(name=f'{"—"*5}',
+                       value=f"Reveniti pe data de 21/02",
+                       inline=False)
 
         self.set_footer(text='Organizat de comunitatea Karpathian Horsemen')
