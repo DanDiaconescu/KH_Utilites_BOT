@@ -140,7 +140,7 @@ async def privat_4(interaction:discord.Interaction, link: str):
 
 @command_tree.command(name='build_leaderboard', description='Setup leaderboard',
                       guild=discord.Object(id=710809754057834496))
-async def privat_5(interaction:discord.Interaction, link: str):
+async def privat_5(interaction:discord.Interaction):
     print(f'{"—"*10} Initializare leaderboard competitie')
     cmd_channel = await bot.fetch_channel(1075884178731700355)
 
