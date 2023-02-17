@@ -144,7 +144,7 @@ async def privat_5(interaction:discord.Interaction):
     print(f'{"—"*10} Initializare leaderboard competitie')
     cmd_channel = await bot.fetch_channel(1075884178731700355)
 
-    interaction.response.send_message(content='Se trimite cand e', ephemeral=False)
+    await interaction.response.send_message(content='Se trimite cand e', ephemeral=False)
     dest_api = bungie_api.DestinyAPI()
     await build_leaderboard.init(cmd_channel, dest_api)
 

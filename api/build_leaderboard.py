@@ -12,8 +12,11 @@ def get_nighfalls(player_info):
     nightfalls = {}
     act_best_time = ''
     for char in player_info['characterIds']:
-        _temp = dest_api.get_activity_history(player_info['membershipType'], player_info['membershipId'], char, 46)
-        _temp = _temp['Response']['activities']
+        try:
+            _temp = dest_api.get_activity_history(player_info['membershipType'], player_info['membershipId'], char, 46)
+            _temp = _temp['Response']['activities']
+        except:
+            continue
 
         for activity in _temp:
             activity_details = activity['activityDetails']
