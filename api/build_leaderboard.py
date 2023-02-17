@@ -92,7 +92,7 @@ def get_top_players(api_handler):
 
 async def init(channel, api_handler):
     top_players = get_top_players(api_handler)
-    channel.send(embed=EmbedLeaderboard(top_players))
+    await channel.send(embed=EmbedLeaderboard(top_players))
     with open('./api/setup.txt', 'w') as f:
         f.write(channel.last_message_id)
 
