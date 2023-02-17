@@ -113,7 +113,7 @@ async def refresh_leaderboar(channel, api_handler):
     try:
         message = await channel.fetch_message(msg_id)
     except:
-        print('[INIT] Mesajul cu embed nu mai exista!')
+        print('[INIT] Mesajul cu leaderborad nu mai exista!')
         return
     await message.edit(content='', embed=EmbedLeaderboard(top_players))
 
