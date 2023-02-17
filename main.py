@@ -202,7 +202,7 @@ async def do_refresh_bot():
     # print(f'[{log_time}] Refresh BOT')
 
 
-@tasks.loop(minutes=100)
+@tasks.loop(hours=24)
 async def do_refresh_leaderboard():
     print(f'{"—" * 5} Refresh leaderboard clan link {"—" * 5}')
     leaderboard_channel = await bot.fetch_channel(1075884178731700355)
