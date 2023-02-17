@@ -94,7 +94,7 @@ async def init(channel, api_handler):
     top_players = get_top_players(api_handler)
     await channel.send(embed=EmbedLeaderboard(top_players))
     with open('./api/setup.txt', 'w') as f:
-        f.write(channel.last_message_id)
+        f.write(str(channel.last_message_id))
 
 async def refresh_leaderboar(channel, api_handler):
     try:
