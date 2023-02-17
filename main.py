@@ -34,6 +34,7 @@ class UtilsBot(commands.Bot):
         print('Starting tasks...')
         do_refresh_embed.start()
         do_refresh_bot.start()
+        do_refresh_leaderboard.start()
         print('Done!')
 
         print('------')
