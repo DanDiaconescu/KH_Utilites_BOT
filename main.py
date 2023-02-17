@@ -201,14 +201,6 @@ async def do_refresh_bot():
     log_time = now.strftime("%m/%d/%Y %H:%M:%S")
     # print(f'[{log_time}] Refresh BOT')
 
-# TOKEN = str(environ.get('TOKEN'))  # sus la run dropdown file -> edit config -> enviroment variables -> TOKEN
-if len(sys.argv) > 1:
-    TOKEN = sys.argv[1]
-    bot.run(TOKEN)
-else:
-    TOKEN = str(environ.get('TOKEN_TEST'))
-    bot.run(TOKEN)
-
 
 @tasks.loop(minutes=100)
 async def do_refresh_leaderboard():
@@ -217,3 +209,11 @@ async def do_refresh_leaderboard():
     dest_api = bungie_api.DestinyAPI()
     await build_leaderboard.refresh_leaderboar(leaderboard_channel, dest_api)
 
+
+# TOKEN = str(environ.get('TOKEN'))  # sus la run dropdown file -> edit config -> enviroment variables -> TOKEN
+if len(sys.argv) > 1:
+    TOKEN = sys.argv[1]
+    bot.run(TOKEN)
+else:
+    TOKEN = str(environ.get('TOKEN_TEST'))
+    bot.run(TOKEN)
