@@ -114,7 +114,7 @@ async def privat_2(interaction: discord.Interaction):
 @command_tree.command(name='event_register', description='Inscrie pentru competitia de speedrun — Lightfall',
                       guild=discord.Object(id=710809754057834496))
 async def privat_4(interaction:discord.Interaction, link: str):
-    print(f'{"—"*10} Inscriere noua pentru competitie {interaction.user}')
+    print(f'{"—"*10} Inscriere noua pentru competitie {interaction.user.nick if interaction.user.nick else interaction.user.name}')
     global event_processing, event_last_user
 
     author = interaction.user

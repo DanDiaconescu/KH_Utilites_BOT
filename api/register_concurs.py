@@ -22,11 +22,12 @@ async def init(interaction, author, profile_link, cmd_channel):
         player_info['membershipId'] = player_data['Response'][0]['membershipId']
     except:
         await interaction.followup.send(content='Eroare, verifica link-ul, daca tot nu merge, contacteaza-l pe <@489214493503520778>', ephemeral=True)
+        print('[EVENT] Eroare link')
         return
 
     try:
         player_data = dest_api.get_player_profile(player_info['membershipType'], player_info['membershipId'], [100])
-        player_name = player_data['Response']['profile']['data']['userInfo']['displayName']
+        player_name = player_data['Response']['profile']['data']['userInfo']['bungieGlobalDisplayName']
 
         if player_name == author or author in player_name or player_name in author:
             pass
@@ -34,6 +35,7 @@ async def init(interaction, author, profile_link, cmd_channel):
             await interaction.followup.send(
                 content='Contul nu este al tau, daca este o eroare, contacteaza-l pe <@489214493503520778>',
                 ephemeral=True)
+            print('[EVENT] Eroare posesie cont')
             return
         player_info['characterIds'] = player_data['Response']['profile']['data']['characterIds']
 
@@ -41,6 +43,7 @@ async def init(interaction, author, profile_link, cmd_channel):
         await interaction.followup.send(
             content='Eroare, verifica link-ul, daca tot nu merge, contacteaza-l pe <@489214493503520778>',
             ephemeral=True)
+        print('[EVENT] Eroare generare profil')
         return
 
     with open('./api/competitie.json', 'r+') as file:
