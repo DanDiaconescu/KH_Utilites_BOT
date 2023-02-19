@@ -27,8 +27,8 @@ def get_nighfalls(player_info):
                 continue
             if activity_values['completed']['basic']['value'] != 1:
                 continue
-            if activity_values['activityDurationSeconds']['basic']['value']:
-                continue
+            # if activity_values['activityDurationSeconds']['basic']['value']:
+            #     continue
 
             act_period = activity['period']
             act_period_format = datetime.datetime.fromisoformat('2023-02-11T22:17:02Z')
@@ -80,10 +80,10 @@ def get_top_players(api_handler):
         file_data = json.load(file)
         for player_dict in file_data["comp"]:
             all_players.append(get_nighfalls(player_dict))
-    try:
-        all_players = sorted(all_players, key=lambda x: x['nightfalls']['time'])
-    except:
-        all_players = []
+
+    all_players = [player for player in all_players if player['nightfalls']]
+    all_players = sorted(all_players, key=lambda x: x['nightfalls']['time'])
+
     top_players = []
     if all_players:
         top_players = all_players[:4] if len(all_players) > 4 else all_players
@@ -126,13 +126,46 @@ class EmbedLeaderboard(discord.Embed):
         super().__init__(title='Leaderboards — Speedrun', color=0x499c54)
 
         self.add_field(name='Eveniment sponsorizat de:',
-                       value=f"<@534063567943499776>",
+                       value=f"<@534063567943499776> \n {'—'*5} \n.",
                        inline=False)
         if top_players:
+            standings = 1
+            _temp_nume = ''
+            _temp_timp = ''
+            _temp_standing = ''
             for player in top_players:
-                self.add_field(name=f'{"—"*5}',
-                               value=f"[{player['displayName']}]({'https://destinytracker.com/destiny-2/profile/bungie/{}/sessions'.format(player['membershipId'])})",
-                               inline=False)
+                player_stat = player.get('nightfalls', [])
+                if not player_stat:
+                    continue
+
+                seconds = player_stat['time'] % (24 * 3600)
+                hours = seconds // 3600
+                seconds %= 3600
+                minutes = seconds // 60
+                seconds %= 60
+                miliseconds = seconds % 1
+
+                _new_nume = f"[{player['displayName']}]('https://destinytracker.com/destiny-2/profile/bungie/{player['membershipId']}/sessions')"
+                _temp_nume = f"{_temp_nume} \n {str(_new_nume)}"
+
+                _temp_timp += f"{f'{minutes}m' if minutes else ''}{f'{seconds}s' if seconds else ''}{f'{miliseconds}s' if miliseconds else ''}"
+                _temp_timp += '\n'
+
+                _temp_standing += f'{standings}\n'
+
+                standings += 1
+                print(_temp_nume)
+
+            self.add_field(name=f'Loc',
+                           value=f"{_temp_standing}",
+                           inline=True)
+            self.add_field(name=f'Nume',
+                           value=f'{_temp_nume}',
+                           inline=True)
+            self.add_field(name=f'Timp',
+                           value=f'{_temp_timp}',
+                           inline=True)
+
         else:
             self.add_field(name=f'{"—"*5}',
                            value=f"Reveniti pe data de 21/02",
