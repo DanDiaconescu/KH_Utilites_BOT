@@ -4,6 +4,7 @@ from datetime import datetime
 
 
 async def init(bot, _role_call, interaction):
+    await interaction.response.defer()
     member_dict = {}
     guilds = bot.guilds
     members = bot.get_all_members()
@@ -23,7 +24,7 @@ async def init(bot, _role_call, interaction):
     not_found_str = '\n'.join(not_found_list)
 
     print(f'Finish \n{"—" * 10}')
-    await interaction.response.send_message(embed=CustomEmbed(_role_call, overdue_str, not_found_str))
+    await interaction.followup.send(embed=CustomEmbed(_role_call, overdue_str, not_found_str))
 
 
 def compare_dicts(member_dict, _role_call_name):
