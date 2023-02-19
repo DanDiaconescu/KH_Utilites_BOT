@@ -79,6 +79,6 @@ def get_member_data(display_name):
     return result1, result2
 
 
-test1, test2 = get_member_data("Dan Diaconescu#8727")
-print(test2)
+# test1, test2 = get_member_data("Dan Diaconescu#8727")
+# print(test2)
 # print(type(test1['mem_type']))
