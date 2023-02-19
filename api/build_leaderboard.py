@@ -4,9 +4,6 @@ import pytz
 import discord
 
 
-# dest_api = bungie_api.DestinyAPI()
-
-
 def get_nighfalls(player_info):
     global dest_api
     nightfalls = {}
@@ -27,22 +24,20 @@ def get_nighfalls(player_info):
                 continue
             if activity_values['completed']['basic']['value'] != 1:
                 continue
-            # if activity_values['activityDurationSeconds']['basic']['value']:
-            #     continue
 
             act_period = activity['period']
-            act_period_format = datetime.datetime.fromisoformat('2023-02-11T22:17:02Z')
-            comp_time = datetime.datetime(2023,2,21,19,0,0)
+            act_period_format = datetime.datetime.fromisoformat(act_period)
+            # comp_time = datetime.datetime(2023,2,21,19,0,0)
+            comp_time = datetime.datetime(2023, 2, 21, 19, 0, 0)
             eet_timezone = pytz.timezone('Europe/Bucharest')
             act_period_format = act_period_format.astimezone(eet_timezone)
             comp_time = comp_time.astimezone(eet_timezone)
+
             if act_period_format < comp_time:
                 continue
             act_type = dest_api.get_activity_definitions('DestinyActivityDefinition', ref_id)
             if act_type['Response']['displayProperties']['name'] != 'Nightfall: Legend':
                 continue
-
-
             act_time = activity_values['activityDurationSeconds']['basic']['value']
 
             if act_best_time and act_time > act_best_time:
@@ -50,17 +45,17 @@ def get_nighfalls(player_info):
             elif not act_best_time:
                 act_best_time = act_time
 
-            act_score = activity_values['score']['basic']['value']
-            act_kills = activity_values['kills']['basic']['value']
-            act_deaths = activity_values['deaths']['basic']['value']
+                act_score = activity_values['score']['basic']['value']
+                act_kills = activity_values['kills']['basic']['value']
+                act_deaths = activity_values['deaths']['basic']['value']
 
-            nightfalls = {'ref': ref_id,
-                          'period': act_period,
-                          'time': act_time,
-                          'score': act_score,
-                          'kills': act_kills,
-                          'deaths': act_deaths,
-                          }
+                nightfalls = {'ref': ref_id,
+                              'period': act_period,
+                              'time': act_time,
+                              'score': act_score,
+                              'kills': act_kills,
+                              'deaths': act_deaths,
+                              }
 
     if nightfalls:
         player_info['nightfalls'] = nightfalls
@@ -92,9 +87,10 @@ def get_top_players(api_handler):
 
 async def init(channel, api_handler):
     top_players = get_top_players(api_handler)
+
+    print(top_players)
     await channel.send(embed=EmbedLeaderboard(top_players))
-    with open('./api/setup.txt', 'w') as f:
-        f.write(str(channel.last_message_id))
+
 
 async def refresh_leaderboar(channel, api_handler):
     try:
@@ -114,19 +110,21 @@ async def refresh_leaderboar(channel, api_handler):
         print('[INIT] Mesajul cu leaderborad nu mai exista!')
         return
 
-    if datetime.datetime.now() < datetime.datetime(2023, 2, 21, 19, 0, 0):
+    from datetime import datetime
+    if datetime.now() < datetime(2023, 2, 21, 19, 0, 0):
         await message.edit(content='', embed=EmbedLeaderboardWarmup())
         return
 
     top_players = get_top_players(api_handler)
     await message.edit(content='', embed=EmbedLeaderboard(top_players))
 
+
 class EmbedLeaderboard(discord.Embed):
     def __init__(self, top_players):
         super().__init__(title='Leaderboards — Speedrun', color=0x499c54)
 
         self.add_field(name='Eveniment sponsorizat de:',
-                       value=f"<@534063567943499776> \n {'—'*5} \n.",
+                       value=f"<@534063567943499776> \n {'—' * 5} \n.",
                        inline=False)
         if top_players:
             standings = 1
@@ -139,8 +137,6 @@ class EmbedLeaderboard(discord.Embed):
                     continue
 
                 seconds = player_stat['time'] % (24 * 3600)
-                hours = seconds // 3600
-                seconds %= 3600
                 minutes = seconds // 60
                 seconds %= 60
                 miliseconds = seconds % 1
@@ -167,7 +163,7 @@ class EmbedLeaderboard(discord.Embed):
                            inline=True)
 
         else:
-            self.add_field(name=f'{"—"*5}',
+            self.add_field(name=f'{"—" * 5}',
                            value=f"Reveniti pe data de 21/02",
                            inline=False)
 
@@ -194,7 +190,7 @@ class EmbedLeaderboardWarmup(discord.Embed):
                                value=f"[{player['displayName']}]({'https://destinytracker.com/destiny-2/profile/bungie/{}/sessions'.format(player['membershipId'])})",
                                inline=False)
 
-        self.add_field(name=f'{"—"*5}',
+        self.add_field(name=f'{"—" * 5}',
                        value=f"Reveniti pe data de 21/02",
                        inline=False)
 
