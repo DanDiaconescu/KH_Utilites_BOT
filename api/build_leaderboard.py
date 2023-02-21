@@ -106,7 +106,7 @@ def get_top_players(api_handler, _comp_time):
 
 
 async def init(channel, api_handler):
-    top_players = get_top_players(api_handler, datetime.datetime(2023, 2, 21, 18, 0, 0))
+    top_players = get_top_players(api_handler, datetime.datetime(2023, 2, 21, 19, 0, 0))
 
     await channel.send(embed=EmbedLeaderboard(top_players))
 
@@ -132,11 +132,11 @@ async def refresh_leaderboar(channel, api_handler):
     from datetime import datetime
     print(datetime.now())
     if datetime.now() < datetime(2023, 2, 21, 18, 0, 0):
-        top_players = get_top_players(api_handler, datetime(2023, 2, 1, 18, 0, 0))
+        top_players = get_top_players(api_handler, datetime(2023, 2, 1, 19, 0, 0))
         await message.edit(content='', embed=EmbedLeaderboardWarmup(top_players))
         return
 
-    top_players = get_top_players(api_handler, datetime(2023, 2, 21, 18, 0, 0))
+    top_players = get_top_players(api_handler, datetime(2023, 2, 21, 19, 0, 0))
     await message.edit(content='', embed=EmbedLeaderboard(top_players))
 
 
@@ -234,7 +234,7 @@ class EmbedLeaderboardWarmup(discord.Embed):
 
         else:
             self.add_field(name=f'{"—" * 5}',
-                           value=f"Reveniti pe data de 21/02",
+                           value=f"Reveniti la urmatorul refresh pentru rezultate",
                            inline=False)
 
         self.set_footer(text='Organizat de comunitatea Karpathian Horsemen')
