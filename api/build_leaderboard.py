@@ -184,7 +184,7 @@ class EmbedLeaderboard(discord.Embed):
 
         else:
             self.add_field(name=f'{"—" * 5}',
-                           value=f"Reveniti pe data de 21/02",
+                           value=f"Reveniti la urmatorul refresh pentru rezultate",
                            inline=False)
 
         self.set_footer(text='Organizat de comunitatea Karpathian Horsemen')
