@@ -130,7 +130,8 @@ async def refresh_leaderboar(channel, api_handler):
         return
 
     from datetime import datetime
-    if datetime.now() < datetime(2023, 2, 21, 19, 0, 0):
+    print(datetime.now())
+    if datetime.now() < datetime(2023, 2, 21, 18, 0, 0):
         top_players = get_top_players(api_handler, datetime(2023, 2, 1, 18, 0, 0))
         await message.edit(content='', embed=EmbedLeaderboardWarmup(top_players))
         return
