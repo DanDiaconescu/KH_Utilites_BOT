@@ -106,9 +106,8 @@ def get_top_players(api_handler, _comp_time):
 
 
 async def init(channel, api_handler):
-    top_players = get_top_players(api_handler, datetime.datetime(2023, 2, 21, 19, 0, 0))
+    top_players = get_top_players(api_handler, datetime.datetime(2023, 2, 21, 18, 0, 0))
 
-    print(top_players)
     await channel.send(embed=EmbedLeaderboard(top_players))
 
 
@@ -132,11 +131,11 @@ async def refresh_leaderboar(channel, api_handler):
 
     from datetime import datetime
     if datetime.now() < datetime(2023, 2, 21, 19, 0, 0):
-        top_players = get_top_players(api_handler, datetime(2023, 2, 1, 19, 0, 0))
+        top_players = get_top_players(api_handler, datetime(2023, 2, 1, 18, 0, 0))
         await message.edit(content='', embed=EmbedLeaderboardWarmup(top_players))
         return
 
-    top_players = get_top_players(api_handler, datetime(2023, 2, 21, 19, 0, 0))
+    top_players = get_top_players(api_handler, datetime(2023, 2, 21, 18, 0, 0))
     await message.edit(content='', embed=EmbedLeaderboard(top_players))
 
 
@@ -171,7 +170,6 @@ class EmbedLeaderboard(discord.Embed):
                 _temp_standing += f'{standings}\n'
 
                 standings += 1
-                print(_temp_nume)
 
             self.add_field(name=f'Loc',
                            value=f"{_temp_standing}",
@@ -222,7 +220,6 @@ class EmbedLeaderboardWarmup(discord.Embed):
                 _temp_standing += f'{standings}\n'
 
                 standings += 1
-                print(_temp_nume)
 
             self.add_field(name=f'Loc',
                            value=f"{_temp_standing}",
