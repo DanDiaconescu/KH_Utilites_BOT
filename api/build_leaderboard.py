@@ -165,7 +165,7 @@ class EmbedLeaderboard(discord.Embed):
                 _new_nume = f"[{player['displayName']}]('https://destinytracker.com/destiny-2/profile/bungie/{player['membershipId']}/sessions')"
                 _temp_nume = f"{_temp_nume} \n {str(_new_nume)}"
 
-                _temp_timp += f"{f'{minutes}m' if minutes else ''}{f'{seconds}s' if seconds else ''}{f'{miliseconds}s' if miliseconds else ''}"
+                _temp_timp += f"{f'{int(minutes)}m' if minutes else ''}{f'{int(seconds)}s' if seconds else ''}{f'{int(miliseconds)}s' if miliseconds else ''}"
                 _temp_timp += '\n'
 
                 _temp_standing += f'{standings}\n'
