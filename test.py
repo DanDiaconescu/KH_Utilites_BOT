@@ -1,43 +1,120 @@
-import datetime
-
-import pydest
-import asyncio
-
-
-# https://github.com/jgayfer/pydest/blob/master/examples/find_user.py
-# https://bungie-net.github.io/multi/operation_get_GroupV2-GetMembersOfGroup.html#operation_get_GroupV2-GetMembersOfGroup
-# https://github.com/jgayfer/pydest
-
+# import datetime
+# import json
 #
-# async def main():
-#     destiny = pydest.Pydest('9d6a3967b68d44baa53f9238a8229689')
-#
-#     clan_dict = await destiny.api.get_members_of_group(4231275)
-#     print(clan_dict)
-#
-#     player_dict = {}
-#
-#     for player in clan_dict['Response']['results']:
-#         if player.get('bungieNetUserInfo', ''):
-#             player_dict[player['bungieNetUserInfo']['supplementalDisplayName']] = datetime.datetime.fromtimestamp(
-#                 int(player['lastOnlineStatusChange']))
-#         else:
-#             player_dict[(player.get('destinyUserInfo', '').get('displayName', ''))] = datetime.datetime.fromtimestamp(
-#                 int(player['lastOnlineStatusChange']))
-#
-#     print(player_dict)
-#     # print(len(plyer_dict))
-#
-#     # print(await destiny.api.get_bungie_net_user_by_id(23652611))  - nu e buna
-#     # print(await destiny.api.get_profile(3, 4611686018493903636, [100]))
-#
-#     await destiny.close()
+# from api import bungie_api
+# import pytz
 #
 #
-# def get_clan_data():
-#     loop = asyncio.new_event_loop()
-#     loop.run_until_complete(main())
-#     loop.close()
+# def get_nighfalls(player_info, _comp_time):
+#     global dest_api
+#     nightfalls = {}
+#     act_best_time = ''
+#
+#     for char in player_info['characterIds']:
+#         try:
+#             _temp = dest_api.get_activity_history(player_info['membershipType'], player_info['membershipId'], char, 46)
+#             print(_temp)
+#             _temp = _temp['Response']['activities']
+#
+#         except:
+#             continue
+#
+#         for activity in _temp:
+#             activity_details = activity['activityDetails']
+#             activity_values = activity['values']
+#             ref_id = activity_details['referenceId']
+#
+#             if activity_values['playerCount']['basic']['value'] > 1:
+#                 continue
+#             if activity_values['completed']['basic']['value'] != 1:
+#                 continue
+#             # print(activity_values['activityDurationSeconds']['basic']['value'])
+#             # if not activity_values['activityDurationSeconds']['basic']['value']:
+#             #     continue
+#
+#             act_period = activity['period']
+#             act_period_format = datetime.datetime.fromisoformat(act_period)
+#             # comp_time = datetime.datetime(2023,2,21,19,0,0)
+#             comp_time = _comp_time
+#             eet_timezone = pytz.timezone('Europe/Bucharest')
+#             act_period_format = act_period_format.astimezone(eet_timezone)
+#             comp_time = comp_time.astimezone(eet_timezone)
+#
+#             if act_period_format < comp_time:
+#                 continue
 #
 #
-# get_clan_data()
+#             act_time = activity_values['activityDurationSeconds']['basic']['value']
+#
+#             if not act_best_time:
+#                 act_best_time = player_info.get('nightfalls', {}).get('time', 0)
+#
+#             try:
+#                 act_type = dest_api.get_activity_definitions('DestinyActivityDefinition', ref_id)
+#             except:
+#                 continue
+#             if act_type['Response']['displayProperties']['name'] != 'Nightfall: Legend':
+#                 continue
+#
+#             if act_best_time and act_time > act_best_time:
+#                 continue
+#             else:
+#                 act_best_time = act_time
+#                 act_score = activity_values['score']['basic']['value']
+#                 act_kills = activity_values['kills']['basic']['value']
+#                 act_deaths = activity_values['deaths']['basic']['value']
+#
+#                 nightfalls = {'ref': ref_id,
+#                               'period': act_period,
+#                               'time': act_time,
+#                               'score': act_score,
+#                               'kills': act_kills,
+#                               'deaths': act_deaths,
+#                               }
+#
+#     if nightfalls:
+#         player_info['nightfalls'] = nightfalls
+#     else:
+#         player_info['nightfalls'] = {}
+#     return player_info
+#
+#
+# def get_top_players(api_handler, _comp_time):
+#     global dest_api
+#     dest_api = api_handler
+#
+#     all_players = []
+#
+#     with open('./api/competitie.json', 'r') as file:
+#         #  escape in cazul in care e deja inscris
+#         file_data = json.load(file)
+#         index_max_print = len(file_data["comp"])
+#         index_print = 1
+#         for player_dict in file_data["comp"]:
+#             all_players.append(get_nighfalls(player_dict, _comp_time))
+#             print(f'{"—" * 3} working on it... {round((index_print / index_max_print) * 100)}%')
+#             index_print += 1
+#     #
+#     # with open('./api/competitie.json', 'w') as file:
+#     #     file_data = {}
+#     #     file_data["comp"] = all_players
+#     #     file.seek(0)
+#     #     json.dump(file_data, file, indent=4)
+#
+#     all_players = [player for player in all_players if player['nightfalls']]
+#     all_players = sorted(all_players, key=lambda x: x['nightfalls']['time'])
+#
+#     top_players = []
+#     if all_players:
+#         top_players = all_players[:4] if len(all_players) > 4 else all_players
+#     return top_players
+#
+#
+# def init_1(api_handler):
+#     top_players = get_top_players(api_handler, datetime.datetime(2023, 2, 21, 19, 0, 0))
+#     return top_players
+#
+# dest_api = bungie_api.DestinyAPI()
+# print('a')
+# print(init_1(dest_api))
+#

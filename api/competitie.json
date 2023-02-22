@@ -1,5 +1,40 @@
 {
     "comp": [
-
+        {
+            "displayName": "Emi#8597",
+            "membershipType": 3,
+            "membershipId": 4611686018489633940,
+            "characterIds": [
+                "2305843010039394251",
+                "2305843010050514084",
+                "2305843010118724851"
+            ],
+            "nightfalls": {
+                "ref": 4196944362,
+                "period": "2023-02-21T18:15:19Z",
+                "time": 532.0,
+                "score": 80175.0,
+                "kills": 99.0,
+                "deaths": 0.0
+            }
+        },
+        {
+            "displayName": "Di'Capra, Goat of Crota#9695",
+            "membershipType": 3,
+            "membershipId": 4611686018491546546,
+            "characterIds": [
+                "2305843009521944811",
+                "2305843010118834733",
+                "2305843010128934391"
+            ],
+            "nightfalls": {
+                "ref": 4196944362,
+                "period": "2023-02-21T23:05:08Z",
+                "time": 628.0,
+                "score": 81405.0,
+                "kills": 97.0,
+                "deaths": 1.0
+            }
+        }
     ]
 }
