@@ -162,7 +162,7 @@ class EmbedLeaderboard(discord.Embed):
                 seconds %= 60
                 miliseconds = seconds % 1
 
-                _new_nume = f"[{player['displayName']}]('https://destinytracker.com/destiny-2/profile/bungie/{player['membershipId']}/sessions')"
+                _new_nume = f"[{player['displayName'].split('#')[0]}]('https://destinytracker.com/destiny-2/profile/bungie/{player['membershipId']}/sessions')"
                 _temp_nume = f"{_temp_nume} \n {str(_new_nume)}"
 
                 _temp_timp += f"{f'{int(minutes)}m' if minutes else ''}{f'{int(seconds)}s' if seconds else ''}{f'{int(miliseconds)}s' if miliseconds else ''}"
