@@ -101,7 +101,7 @@ def get_top_players(api_handler, _comp_time):
 
     top_players = []
     if all_players:
-        top_players = all_players  #[:4] if len(all_players) > 4 else all_players
+        top_players = all_players[:10] if len(all_players) > 4 else all_players
     return top_players
 
 
@@ -162,7 +162,7 @@ class EmbedLeaderboard(discord.Embed):
                 seconds %= 60
                 miliseconds = seconds % 1
 
-                _new_nume = f"[{player['displayName'].split('#')[0]}]('https://destinytracker.com/destiny-2/profile/bungie/{player['membershipId']}/sessions')"
+                _new_nume = f"{player['displayName']}"  # ]('https://destinytracker.com/destiny-2/profile/bungie/{player['membershipId']}/sessions')
                 _temp_nume = f"{_temp_nume} \n {str(_new_nume)}"
 
                 _temp_timp += f"{f'{int(minutes)}m' if minutes else ''}{f'{int(seconds)}s' if seconds else ''}{f'{int(miliseconds)}s' if miliseconds else ''}"
