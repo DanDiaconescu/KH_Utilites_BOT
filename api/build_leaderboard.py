@@ -101,7 +101,7 @@ def get_top_players(api_handler, _comp_time):
 
     top_players = []
     if all_players:
-        top_players = all_players[:4] if len(all_players) > 4 else all_players
+        top_players = all_players  #[:4] if len(all_players) > 4 else all_players
     return top_players
 
 
