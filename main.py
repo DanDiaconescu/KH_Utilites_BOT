@@ -217,7 +217,6 @@ async def on_member_remove(member):
     text = ''
     member_name = f'{member.nick if member.nick else member.name}'
     for role in member.roles:
-        print(role, role.id)
         if '797081984584253512' in str(role.id):
             text = f'Membrul __**{member_name}**__ a iesit si facea parte din <@&797081984584253512>'
         elif '797388341989474314' in str(role.id):
