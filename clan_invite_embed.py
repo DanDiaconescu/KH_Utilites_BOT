@@ -31,7 +31,7 @@ class ClanEmbed(discord.Embed):
             ping_str = ' '.join([f'<@{user}>' for user in self.clan_admin[clan]])
             if clan_numbers[clan] > 5:
                 locuri_clan = f"{clan_numbers[clan]} locuri libere"
-            elif clan_numbers[clan] <5:
+            elif clan_numbers[clan] <= 5:
                 locuri_clan = f"{clan_numbers[clan]} locuri rezervate"
             else:
                 locuri_clan = "CLAN PLIN"
