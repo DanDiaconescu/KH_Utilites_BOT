@@ -29,8 +29,14 @@ class ClanEmbed(discord.Embed):
 
         for clan in clan_numbers:
             ping_str = ' '.join([f'<@{user}>' for user in self.clan_admin[clan]])
+            if clan_numbers[clan] > 5:
+                locuri_clan = f"{clan_numbers[clan]} locuri libere"
+            elif clan_numbers[clan] <5:
+                locuri_clan = f"{clan_numbers[clan]} locuri rezervate"
+            else:
+                locuri_clan = "CLAN PLIN"
             self.add_field(name='',
-                           value=f'Clan {"<:steam:886894682389508136>" if clan != "X" else "<:xbox:896241390005145651>"} [Karpathian Horsemen #{clan}]({self.url_dict[clan]}) **{f"{clan_numbers[clan]} free spaces" if clan_numbers[clan] != 0 else "FULL CLAN"}** \n Contact: {ping_str} \n {"—" * 30} \n',
+                           value=f'Clan {"<:steam:886894682389508136>" if clan != "X" else "<:xbox:896241390005145651>"} [Karpathian Horsemen #{clan}]({self.url_dict[clan]}) **{locuri_clan}** \n Contact: {ping_str} \n {"—" * 30} \n',
                            inline=False)
 
         self.set_footer(text='© Karpathian Horsemen',
