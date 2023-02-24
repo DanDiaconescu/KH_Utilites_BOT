@@ -154,9 +154,9 @@ async def privat_5(interaction:discord.Interaction):
 async def on_member_join(member):
     print(f"{'—'*5} Generare mesaj membru nou - {member.name} {'—'*5}")
     welcome_channel = await bot.fetch_channel(954083245522313266)
-    welcome_txt = '''Salut {} ! O sa fie nevoie să iți dai register ca să poți avea acces la canalele de pe server. 
-Te rog să mergi pe <#938290015195238400> și să urmezi pașii de acolo. 
-Dacă dai join pe unul dintre clanuri, te rog să dai tag responsabililor de clan pe <#938294344853647431>. 
+    welcome_txt = '''Salut {} ! O sa fie nevoie să iți dai register ca să poți avea acces la canalele de pe server.
+Te rog să mergi pe <#938290015195238400> și să urmezi pașii de acolo.
+Dacă dai join pe unul dintre clanuri, te rog să dai tag responsabililor de clan pe <#938294344853647431>.
 Registerul cu Warmind (Charlemange) este obligatoriu in cadrul comunitatii noastre.
 Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul de mai jos. '''
     new_message = await welcome_channel.send(content=welcome_txt.format(member.mention).replace('\n', ''))
@@ -208,6 +208,30 @@ async def do_refresh_leaderboard():
     leaderboard_channel = await bot.fetch_channel(1075884178731700355)
     dest_api = bungie_api.DestinyAPI()
     await build_leaderboard.refresh_leaderboar(leaderboard_channel, dest_api)
+
+
+@bot.event
+async def on_member_remove(member):
+    print(f"{'—'*5} A iesit - {member.name} {'—'*5}")
+    update_channel = await bot.fetch_channel(795285928406155304)
+    text = ''
+    member_name = f'{member.nick if member.nick else member.name}'
+    for role in member.roles:
+        print(role, role.id)
+        if '797081984584253512' in str(role.id):
+            text = f'Membrul {member_name} a iesit si facea parte din <@&797081984584253512>'
+        elif '797388341989474314' in str(role.id):
+            text = f'Membrul {member_name} a iesit si facea parte din <@&797081984584253512>'
+        elif '797388345633406976' in str(role.id):
+            text = f'Membrul {member_name} a iesit si facea parte din <@&797388345633406976>'
+        elif '797115294983258183' in str(role.id):
+            text = f'Membrul {member_name} a iesit si facea parte din <@&797115294983258183>'
+        elif '836934071224762419' in str(role.id):
+            text = f'Membrul {member_name} a iesit si facea parte din <@&836934071224762419>'
+    if not text:
+        text = f'Membrul {member_name} a iesit'
+
+    new_message = await update_channel.send(content=f'{text}')
 
 
 # TOKEN = str(environ.get('TOKEN'))  # sus la run dropdown file -> edit config -> enviroment variables -> TOKEN
