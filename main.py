@@ -219,17 +219,17 @@ async def on_member_remove(member):
     for role in member.roles:
         print(role, role.id)
         if '797081984584253512' in str(role.id):
-            text = f'Membrul {member_name} a iesit si facea parte din <@&797081984584253512>'
+            text = f'Membrul __**{member_name}**__ a iesit si facea parte din <@&797081984584253512>'
         elif '797388341989474314' in str(role.id):
-            text = f'Membrul {member_name} a iesit si facea parte din <@&797081984584253512>'
+            text = f'Membrul __**{member_name}**__ a iesit si facea parte din <@&797081984584253512>'
         elif '797388345633406976' in str(role.id):
-            text = f'Membrul {member_name} a iesit si facea parte din <@&797388345633406976>'
+            text = f'Membrul __**{member_name}**__ a iesit si facea parte din <@&797388345633406976>'
         elif '797115294983258183' in str(role.id):
-            text = f'Membrul {member_name} a iesit si facea parte din <@&797115294983258183>'
+            text = f'Membrul __**{member_name}**__ a iesit si facea parte din <@&797115294983258183>'
         elif '836934071224762419' in str(role.id):
-            text = f'Membrul {member_name} a iesit si facea parte din <@&836934071224762419>'
+            text = f'Membrul __**{member_name}**__ a iesit si facea parte din <@&836934071224762419>'
     if not text:
-        text = f'Membrul {member_name} a iesit'
+        text = f'Membrul __**{member_name}**__ a iesit'
 
     new_message = await update_channel.send(content=f'{text}')
 
