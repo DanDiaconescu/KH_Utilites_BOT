@@ -167,7 +167,7 @@ Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul 
     # admin = server.get_role(710818161867620412)
 
     admin_list = ['<@&729027061322350762>', '<@&790256564110884864>', '<@&710818161867620412>']
-    new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}')
+    new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}', auto_archive_duration=1440)
     await new_thread.send(content=f'Dacă întâmpini probleme, te rog să ne lași un mesaj aici și te vom asista în cel mai scurt timp posibil. {member.mention} {" ".join(admin_list)}')
 
 
@@ -204,10 +204,12 @@ async def do_refresh_bot():
 
 @tasks.loop(minutes=51)
 async def do_refresh_leaderboard():
-    print(f'{"—" * 5} Refresh leaderboard clan link {"—" * 5}')
-    leaderboard_channel = await bot.fetch_channel(1075884178731700355)
-    dest_api = bungie_api.DestinyAPI()
-    await build_leaderboard.refresh_leaderboar(leaderboard_channel, dest_api)
+    import datetime
+    if datetime.datetime.now() < datetime.datetime(2023,2,26,18,0,0):
+        print(f'{"—" * 5} Refresh leaderboard clan link {"—" * 5}')
+        leaderboard_channel = await bot.fetch_channel(1075884178731700355)
+        dest_api = bungie_api.DestinyAPI()
+        await build_leaderboard.refresh_leaderboar(leaderboard_channel, dest_api)
 
 
 @bot.event
