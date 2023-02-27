@@ -111,43 +111,43 @@ async def privat_2(interaction: discord.Interaction):
 #     await bot_register_dayone.init(cmd_channel, args)
 
 
-@command_tree.command(name='event_register', description='Inscrie pentru competitia de speedrun — Lightfall',
-                      guild=discord.Object(id=710809754057834496))
-async def privat_4(interaction:discord.Interaction, link: str):
-    print(f'{"—"*10} Inscriere noua pentru competitie {interaction.user.nick if interaction.user.nick else interaction.user.name}')
-    global event_processing, event_last_user
+# @command_tree.command(name='event_register', description='Inscrie pentru competitia de speedrun — Lightfall',
+#                       guild=discord.Object(id=710809754057834496))
+# async def privat_4(interaction:discord.Interaction, link: str):
+#     print(f'{"—"*10} Inscriere noua pentru competitie {interaction.user.nick if interaction.user.nick else interaction.user.name}')
+#     global event_processing, event_last_user
+#
+#     author = interaction.user
+#
+#     if event_processing and event_last_user != author.id:
+#         await interaction.response.send_message(content="Momentan comanda este folosita de alt utilizator, te rog sa revi in cateva momente.",ephemeral=True)
+#         return
+#     event_processing = True
+#     event_last_user = author.id
+#
+#     author_name = author.nick
+#     if not author_name:
+#         author_name = author.name
+#
+#     cmd_channel = await bot.fetch_channel(1075893874754588722)
+#
+#     # await interaction.response.defer()
+#     # await interaction.response.send_message(content='Asteapta, te rog.', ephemeral=True)
+#     try:
+#         await register_concurs.init(interaction, author_name, link, cmd_channel)
+#     finally:
+#         event_processing = False
 
-    author = interaction.user
 
-    if event_processing and event_last_user != author.id:
-        await interaction.response.send_message(content="Momentan comanda este folosita de alt utilizator, te rog sa revi in cateva momente.",ephemeral=True)
-        return
-    event_processing = True
-    event_last_user = author.id
-
-    author_name = author.nick
-    if not author_name:
-        author_name = author.name
-
-    cmd_channel = await bot.fetch_channel(1075893874754588722)
-
-    # await interaction.response.defer()
-    # await interaction.response.send_message(content='Asteapta, te rog.', ephemeral=True)
-    try:
-        await register_concurs.init(interaction, author_name, link, cmd_channel)
-    finally:
-        event_processing = False
-
-
-@command_tree.command(name='build_leaderboard', description='Setup leaderboard',
-                      guild=discord.Object(id=710809754057834496))
-async def privat_5(interaction:discord.Interaction):
-    print(f'{"—"*10} Initializare leaderboard competitie')
-    cmd_channel = await bot.fetch_channel(1075884178731700355)
-
-    await interaction.response.send_message(content='Se trimite cand e', ephemeral=False)
-    dest_api = bungie_api.DestinyAPI()
-    await build_leaderboard.init(cmd_channel, dest_api)
+# @command_tree.command(name='build_leaderboard', description='Setup leaderboard',
+#                       guild=discord.Object(id=710809754057834496))
+# async def privat_5(interaction:discord.Interaction):
+#     print(f'{"—"*10} Initializare leaderboard competitie')
+#     cmd_channel = await bot.fetch_channel(1075884178731700355)
+#
+#     await interaction.response.send_message(content='Se trimite cand e', ephemeral=False)
+#     dest_api = bungie_api.DestinyAPI()
+#     await build_leaderboard.init(cmd_channel, dest_api)
 
 
 @bot.event
@@ -202,14 +202,14 @@ async def do_refresh_bot():
     # print(f'[{log_time}] Refresh BOT')
 
 
-@tasks.loop(minutes=51)
-async def do_refresh_leaderboard():
-    import datetime
-    if datetime.datetime.now() < datetime.datetime(2023,2,26,18,0,0):
-        print(f'{"—" * 5} Refresh leaderboard clan link {"—" * 5}')
-        leaderboard_channel = await bot.fetch_channel(1075884178731700355)
-        dest_api = bungie_api.DestinyAPI()
-        await build_leaderboard.refresh_leaderboar(leaderboard_channel, dest_api)
+# @tasks.loop(minutes=51)
+# async def do_refresh_leaderboard():
+#     import datetime
+#     if datetime.datetime.now() < datetime.datetime(2023,2,26,18,0,0):
+#         print(f'{"—" * 5} Refresh leaderboard clan link {"—" * 5}')
+#         leaderboard_channel = await bot.fetch_channel(1075884178731700355)
+#         dest_api = bungie_api.DestinyAPI()
+#         await build_leaderboard.refresh_leaderboar(leaderboard_channel, dest_api)
 
 
 @bot.event
