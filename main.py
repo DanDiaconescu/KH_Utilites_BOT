@@ -183,11 +183,14 @@ async def privat_2(interaction: discord.Interaction):
 async def transfer_to_channel(interaction:discord.Interaction, voice_call:discord.VoiceChannel):
     print(f'{"—"*10} Initializare transfer {interaction.user.nick if interaction.user.nick else interaction.user.name}')
 
-    voice_channel = voice_call
-    author = interaction.user
+    try:
+        voice_channel = voice_call
+        author = interaction.user
 
-    await author.move_to(voice_channel)
-    await interaction.response.send_message(content=f'Transfer donator pe canalul voce **{voice_channel.name}**')
+        await author.move_to(voice_channel)
+        await interaction.response.send_message(content=f'Transfer donator pe canalul voce **{voice_channel.name}**')
+    except:
+        await interaction.response.send_message(content=f'Intra pe un canal voce pentru a putea fi transferat', ephemeral=True)
 
 
 '''
