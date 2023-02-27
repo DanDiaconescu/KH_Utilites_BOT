@@ -180,11 +180,11 @@ async def privat_2(interaction: discord.Interaction):
 
 @command_tree.command(name='transfer', description='Poti sa dai join pe un canal voce peste limita',
                       guild=discord.Object(id=710809754057834496))
-async def transfer_to_channel(interaction:discord.Interaction, voice_call:discord.VoiceChannel):
+async def transfer_to_channel(interaction:discord.Interaction, canal_voce:discord.VoiceChannel):
     print(f'{"—"*10} Initializare transfer {interaction.user.nick if interaction.user.nick else interaction.user.name}')
 
     try:
-        voice_channel = voice_call
+        voice_channel = canal_voce
         author = interaction.user
 
         await author.move_to(voice_channel)
