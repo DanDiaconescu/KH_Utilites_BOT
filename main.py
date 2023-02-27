@@ -7,6 +7,7 @@ import sys
 from os import environ
 from day_one import bot_register_dayone
 from api import register_concurs, build_leaderboard, bungie_api
+from utilities import donator_manage
 
 
 class UtilsBot(commands.Bot):
@@ -193,6 +194,24 @@ async def transfer_to_channel(interaction:discord.Interaction, canal_voce:discor
         await interaction.response.send_message(content=f'Intra pe un canal voce pentru a putea fi transferat', ephemeral=True)
 
 
+@command_tree.command(name='donator_check', description='Vezi donatori peste limita',
+                      guild=discord.Object(id=710809754057834496))
+async def detect_no_donate(interaction:discord.Interaction):
+    print(f'{"—"*10} Initializare detect not donator')
+
+    await donator_manage.init(bot, interaction)
+
+
+@command_tree.command(name='donator_add', description='Adauga donator cu limita de timp',
+                      guild=discord.Object(id=710809754057834496))
+async def add_new_ddonator(interaction:discord.Interaction, membru:discord.Member, an:str, luna:str, zi:str):
+    print(f'{"—"*10} Initializare adauga donator {membru.display_name}')
+
+    timp = f'{zi}/{luna}/{an}'
+
+    await donator_manage.add_donator(interaction, membru, timp)
+
+
 '''
 
 —————————————————————————————————————————————————————————————————————————————————————————————————
@@ -201,25 +220,25 @@ async def transfer_to_channel(interaction:discord.Interaction, canal_voce:discor
 
 '''
 
-# @bot.event
-# async def on_member_join(member):
-#     print(f"{'—'*5} Generare mesaj membru nou - {member.name} {'—'*5}")
-#     welcome_channel = await bot.fetch_channel(954083245522313266)
-#     welcome_txt = '''Salut {} ! O sa fie nevoie să iți dai register ca să poți avea acces la canalele de pe server.
-# Te rog să mergi pe <#938290015195238400> și să urmezi pașii de acolo.
-# Dacă dai join pe unul dintre clanuri, te rog să dai tag responsabililor de clan pe <#938294344853647431>.
-# Registerul cu Warmind (Charlemange) este obligatoriu in cadrul comunitatii noastre.
-# Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul de mai jos. '''
-#     new_message = await welcome_channel.send(content=welcome_txt.format(member.mention).replace('\n', ''))
-#
-#     # server = await bot.fetch_guild(710809754057834496)
-#     # gatekeep = server.get_role(729027061322350762)
-#     # tech = server.get_role(790256564110884864)
-#     # admin = server.get_role(710818161867620412)
-#
-#     admin_list = ['<@&729027061322350762>', '<@&790256564110884864>', '<@&710818161867620412>']
-#     new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}', auto_archive_duration=1440)
-#     await new_thread.send(content=f'Dacă întâmpini probleme, te rog să ne lași un mesaj aici și te vom asista în cel mai scurt timp posibil. {member.mention} {" ".join(admin_list)}')
+@bot.event
+async def on_member_join(member):
+    print(f"{'—'*5} Generare mesaj membru nou - {member.name} {'—'*5}")
+    welcome_channel = await bot.fetch_channel(954083245522313266)
+    welcome_txt = '''Salut {} ! O sa fie nevoie să iți dai register ca să poți avea acces la canalele de pe server.
+Te rog să mergi pe <#938290015195238400> și să urmezi pașii de acolo.
+Dacă dai join pe unul dintre clanuri, te rog să dai tag responsabililor de clan pe <#938294344853647431>.
+Registerul cu Warmind (Charlemange) este obligatoriu in cadrul comunitatii noastre.
+Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul de mai jos. '''
+    new_message = await welcome_channel.send(content=welcome_txt.format(member.mention).replace('\n', ''))
+
+    # server = await bot.fetch_guild(710809754057834496)
+    # gatekeep = server.get_role(729027061322350762)
+    # tech = server.get_role(790256564110884864)
+    # admin = server.get_role(710818161867620412)
+
+    admin_list = ['<@&729027061322350762>', '<@&790256564110884864>', '<@&710818161867620412>']
+    new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}', auto_archive_duration=1440)
+    await new_thread.send(content=f'Dacă întâmpini probleme, te rog să ne lași un mesaj aici și te vom asista în cel mai scurt timp posibil. {member.mention} {" ".join(admin_list)}')
 
 
 @tasks.loop(minutes=60)
