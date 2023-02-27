@@ -34,7 +34,7 @@ class UtilsBot(commands.Bot):
         print('Starting tasks...')
         do_refresh_embed.start()
         do_refresh_bot.start()
-        do_refresh_leaderboard.start()
+        # do_refresh_leaderboard.start()
         print('Done!')
 
         print('------')
@@ -51,6 +51,14 @@ pentru event
 event_processing = False
 event_last_user = None
 
+
+'''
+
+—————————————————————————————————————————————————————————————————————————————————————————————————
+                    Comenzi management
+—————————————————————————————————————————————————————————————————————————————————————————————————
+
+'''
 
 @command_tree.command(name='curatenie_generala', description='Admin-only',
                       guild=discord.Object(id=710809754057834496))
@@ -95,6 +103,15 @@ async def privat_2(interaction: discord.Interaction):
         await clan_invite_embed.init(interaction, bot)
     else:
         await interaction.response.send_message(content='Teapa', ephemeral=True)
+
+
+'''
+
+—————————————————————————————————————————————————————————————————————————————————————————————————
+                    Event-uri
+—————————————————————————————————————————————————————————————————————————————————————————————————
+
+'''
 
 
 # @command_tree.command(name='dayone_register', description='Inscrie echipa pentru Day One — Lightfall',
@@ -150,25 +167,56 @@ async def privat_2(interaction: discord.Interaction):
 #     await build_leaderboard.init(cmd_channel, dest_api)
 
 
-@bot.event
-async def on_member_join(member):
-    print(f"{'—'*5} Generare mesaj membru nou - {member.name} {'—'*5}")
-    welcome_channel = await bot.fetch_channel(954083245522313266)
-    welcome_txt = '''Salut {} ! O sa fie nevoie să iți dai register ca să poți avea acces la canalele de pe server.
-Te rog să mergi pe <#938290015195238400> și să urmezi pașii de acolo.
-Dacă dai join pe unul dintre clanuri, te rog să dai tag responsabililor de clan pe <#938294344853647431>.
-Registerul cu Warmind (Charlemange) este obligatoriu in cadrul comunitatii noastre.
-Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul de mai jos. '''
-    new_message = await welcome_channel.send(content=welcome_txt.format(member.mention).replace('\n', ''))
 
-    # server = await bot.fetch_guild(710809754057834496)
-    # gatekeep = server.get_role(729027061322350762)
-    # tech = server.get_role(790256564110884864)
-    # admin = server.get_role(710818161867620412)
 
-    admin_list = ['<@&729027061322350762>', '<@&790256564110884864>', '<@&710818161867620412>']
-    new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}', auto_archive_duration=1440)
-    await new_thread.send(content=f'Dacă întâmpini probleme, te rog să ne lași un mesaj aici și te vom asista în cel mai scurt timp posibil. {member.mention} {" ".join(admin_list)}')
+
+'''
+
+—————————————————————————————————————————————————————————————————————————————————————————————————
+                    Donator - Vet
+—————————————————————————————————————————————————————————————————————————————————————————————————
+
+'''
+
+@command_tree.command(name='transfer', description='Poti sa dai join pe un canal voce peste limita',
+                      guild=discord.Object(id=710809754057834496))
+async def transfer_to_channel(interaction:discord.Interaction, voice_call:discord.VoiceChannel):
+    print(f'{"—"*10} Initializare transfer {interaction.user.nick if interaction.user.nick else interaction.user.name}')
+
+    voice_channel = voice_call
+    author = interaction.user
+
+    await author.move_to(voice_channel)
+    await interaction.response.send_message(content=f'Transfer donator pe canalul voce **{voice_channel.name}**')
+
+
+'''
+
+—————————————————————————————————————————————————————————————————————————————————————————————————
+                    Bot events si task-uri 
+—————————————————————————————————————————————————————————————————————————————————————————————————
+
+'''
+
+# @bot.event
+# async def on_member_join(member):
+#     print(f"{'—'*5} Generare mesaj membru nou - {member.name} {'—'*5}")
+#     welcome_channel = await bot.fetch_channel(954083245522313266)
+#     welcome_txt = '''Salut {} ! O sa fie nevoie să iți dai register ca să poți avea acces la canalele de pe server.
+# Te rog să mergi pe <#938290015195238400> și să urmezi pașii de acolo.
+# Dacă dai join pe unul dintre clanuri, te rog să dai tag responsabililor de clan pe <#938294344853647431>.
+# Registerul cu Warmind (Charlemange) este obligatoriu in cadrul comunitatii noastre.
+# Dacă întâmpini probleme, te rog să contactezi un administrator in thread-ul de mai jos. '''
+#     new_message = await welcome_channel.send(content=welcome_txt.format(member.mention).replace('\n', ''))
+#
+#     # server = await bot.fetch_guild(710809754057834496)
+#     # gatekeep = server.get_role(729027061322350762)
+#     # tech = server.get_role(790256564110884864)
+#     # admin = server.get_role(710818161867620412)
+#
+#     admin_list = ['<@&729027061322350762>', '<@&790256564110884864>', '<@&710818161867620412>']
+#     new_thread = await new_message.create_thread(name=f'Support Thread - {member.name}', auto_archive_duration=1440)
+#     await new_thread.send(content=f'Dacă întâmpini probleme, te rog să ne lași un mesaj aici și te vom asista în cel mai scurt timp posibil. {member.mention} {" ".join(admin_list)}')
 
 
 @tasks.loop(minutes=60)
@@ -235,6 +283,20 @@ async def on_member_remove(member):
     new_message = await update_channel.send(content=f'{text}')
 
 
+# @tasks.loop(hours=24)
+# async def do_refresh_donator_list():
+#     import datetime
+#     now = datetime.datetime.now()
+#     log_time = now.strftime("%m/%d/%Y %H:%M:%S")
+
+
+'''
+
+—————————————————————————————————————————————————————————————————————————————————————————————————
+                    RUN
+—————————————————————————————————————————————————————————————————————————————————————————————————
+
+'''
 # TOKEN = str(environ.get('TOKEN'))  # sus la run dropdown file -> edit config -> enviroment variables -> TOKEN
 if len(sys.argv) > 1:
     TOKEN = sys.argv[1]
