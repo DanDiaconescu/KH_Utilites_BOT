@@ -188,7 +188,7 @@ async def transfer_to_channel(interaction:discord.Interaction, voice_call:discor
         author = interaction.user
 
         await author.move_to(voice_channel)
-        await interaction.response.send_message(content=f'Transfer donator pe canalul voce **{voice_channel.name}**')
+        await interaction.response.send_message(content=f'Transfer {author.mention} pe canalul voce {voice_channel.mention}')
     except:
         await interaction.response.send_message(content=f'Intra pe un canal voce pentru a putea fi transferat', ephemeral=True)
 
