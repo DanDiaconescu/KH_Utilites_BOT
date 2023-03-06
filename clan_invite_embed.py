@@ -27,12 +27,18 @@ class ClanEmbed(discord.Embed):
                         icon_url='https://cdn.discordapp.com/icons/710809754057834496/c1e14b8c875da15ad7f84409c5559c79.jpg')
         self.set_thumbnail(url='https://www.pngitem.com/pimgs/m/63-636562_join-us-won-t-you-hd-png-download.png')
 
+
+        self.add_field(name='',
+                       value=f'Nu se accepta solicitarea fara sa anuntati administratorii de clan cu un @ pe <#938294344853647431>! \n Ultimele 5 locuri din clan sunt rezervate pentru membri ai comunitatii care doresc sa completeze triumfe!',
+                       inline=False)
+
+
         for clan in clan_numbers:
             ping_str = ' '.join([f'<@{user}>' for user in self.clan_admin[clan]])
             if clan_numbers[clan] > 5:
                 locuri_clan = f"{clan_numbers[clan]} locuri libere"
             elif clan_numbers[clan] <= 5:
-                locuri_clan = f"{clan_numbers[clan]} locuri rezervate"
+                locuri_clan = f"CLAN PLIN \n{clan_numbers[clan]} locuri rezervate"
             else:
                 locuri_clan = "CLAN PLIN"
             self.add_field(name='',

@@ -3,6 +3,7 @@ from api import bungie_api
 import json
 from random import randint
 
+
 async def init(interaction, author, profile_link, cmd_channel):
     await interaction.response.defer(ephemeral=True)
 
@@ -21,7 +22,9 @@ async def init(interaction, author, profile_link, cmd_channel):
         player_info['membershipType'] = player_data['Response'][0]['membershipType']
         player_info['membershipId'] = player_data['Response'][0]['membershipId']
     except:
-        await interaction.followup.send(content='Eroare, verifica link-ul, daca tot nu merge, contacteaza-l pe <@489214493503520778>', ephemeral=True)
+        await interaction.followup.send(
+            content='Eroare, verifica link-ul, daca tot nu merge, contacteaza-l pe <@489214493503520778>',
+            ephemeral=True)
         print('[EVENT] Eroare link')
         return
 
@@ -57,6 +60,7 @@ async def init(interaction, author, profile_link, cmd_channel):
     await cmd_channel.send(embed=EmbedSuccess(player_info))
     return
 
+
 class EmbedSuccess(discord.Embed):
     def __init__(self, player_info):
         messages = {
@@ -75,7 +79,8 @@ class EmbedSuccess(discord.Embed):
         super().__init__(title=f"New Competitor!", color=0xdfff7a)
 
         self.add_field(name=f'',
-                       value=messages[randint(1, 10)].format(f"[{player_info['displayName']}]({'https://destinytracker.com/destiny-2/profile/bungie/{}/sessions'.format(player_info['membershipId'])})"),
+                       value=messages[randint(1, 10)].format(
+                           f"[{player_info['displayName']}]({'https://destinytracker.com/destiny-2/profile/bungie/{}/sessions'.format(player_info['membershipId'])})"),
                        inline=False)
 
         self.add_field(name=f'',
