@@ -29,7 +29,7 @@ class ClanEmbed(discord.Embed):
 
 
         self.add_field(name='',
-                       value=f'Nu se accepta solicitarea fara sa anuntati administratorii de clan cu un @ pe <#938294344853647431>! \n Ultimele 5 locuri din clan sunt rezervate pentru membri ai comunitatii care doresc sa completeze triumfe!',
+                       value=f'Nu se accepta solicitarea fara sa anuntati administratorii de clan cu un @ pe <#938294344853647431>! \n\n Ultimele 5 locuri din clan sunt rezervate pentru membri ai comunitatii care doresc sa completeze triumfe! \n \n{"—" * 30}',
                        inline=False)
 
 
