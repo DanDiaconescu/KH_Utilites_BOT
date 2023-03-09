@@ -212,6 +212,14 @@ async def add_new_ddonator(interaction:discord.Interaction, membru:discord.Membe
     await donator_manage.add_donator(interaction, membru, timp)
 
 
+# @command_tree.command(name='muie_politia_romana', description='ceva',
+#                       guild=discord.Object(id=710809754057834496))
+# async def muie_ilie(interaction:discord.Interaction):
+#     await interaction.response.defer()
+#
+#     await interaction.followup.send(content=f'Muie <@160472069606342656>')
+
+
 '''
 
 —————————————————————————————————————————————————————————————————————————————————————————————————

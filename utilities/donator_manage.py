@@ -22,27 +22,32 @@ async def init(bot, interaction):
         elif donator_role in member.roles and not server_booster in member.roles:
             delete_donator[member.display_name] = member.id
 
-    with open('./utilities/donator_db.json', 'r+') as f:
+    with open('./utilities/donator_db.json') as f:
         donator_manual = json.load(f)
         donator_list = donator_manual['data']
-        for donator in donator_list:
-            print(donator)
-            from datetime import datetime
-            if donator['name'] in delete_donator and datetime.now() < datetime.strptime(donator['time'], '%d/%m/%Y'):
-                delete_donator.pop(donator['name'])
-            else:
-                # aici pus await scos rol
-                donator_manual['data'].remove(donator)
-                f.seek(0)
-                json.dump(donator_manual, f, indent=4)
+
+    for donator in donator_list:
+        from datetime import datetime
+
+        if donator['name'] in delete_donator and datetime.now() < datetime.strptime(donator['time'], '%d/%m/%Y'):
+            print(donator['name'])
+            delete_donator.pop(donator['name'])
+        else:
+            # aici pus await scos rol
+            donator_manual['data'].remove(donator)
+
+    with open('./utilities/donator_db.json', 'w') as f:
+        json.dump(donator_manual, f, indent=4)
 
     print(f'Finish \n{"—" * 10}')
-    await interaction.followup.send(embed=CustomEmbed(delete_donator))
+    await interaction.followup.send(embed=CustomEmbed_1(delete_donator))
+    await interaction.followup.send(embed=CustomEmbed_2(donator_dict))
+    await interaction.followup.send(embed=CustomEmbed_3(donator_manual['data']))
 
 
-class CustomEmbed(discord.Embed):
+class CustomEmbed_1(discord.Embed):
     def __init__(self, delete_donator):
-        super().__init__(title=f"Lista de donatori overdue", color=0x309c8b)
+        super().__init__(title=f"Lista de donatori care trebuie stersi", color=0xc8192b)
 
         for not_don in delete_donator:
             self.add_field(name=f'',
@@ -50,10 +55,37 @@ class CustomEmbed(discord.Embed):
                            inline=False)
 
 
+class CustomEmbed_2(discord.Embed):
+    def __init__(self, donator_dict):
+        super().__init__(title=f"Lista Boosteri", color=0xf47fff)
+
+        for booster in donator_dict:
+            self.add_field(name=f'',
+                           value=f'<@{donator_dict[booster]}>',
+                           inline=False)
+
+
+class CustomEmbed_3(discord.Embed):
+    def __init__(self, donator_manual):
+        super().__init__(title=f"Lista de donatori concursuri", color=0xffc83d)
+
+        for donator in donator_manual:
+            self.add_field(name=f'',
+                           value=f'<@{donator["id"]}> pana la data de __**{donator["time"]}**__',
+                           inline=False)
+
+
+'''
+
+—————————————————————————————————————————————————————————————————————————————————————————————————
+                    Adauga
+—————————————————————————————————————————————————————————————————————————————————————————————————
+
+'''
+
+
 async def add_donator(interaction, member, time):
     await interaction.response.defer()
-
-    new_donator_dict = {}
 
     new_donator_dict = {'name': member.display_name,
                         'id': member.id,
