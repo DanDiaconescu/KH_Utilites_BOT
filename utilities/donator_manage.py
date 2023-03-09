@@ -30,7 +30,6 @@ async def init(bot, interaction):
         from datetime import datetime
 
         if donator['name'] in delete_donator and datetime.now() < datetime.strptime(donator['time'], '%d/%m/%Y'):
-            print(donator['name'])
             delete_donator.pop(donator['name'])
         else:
             # aici pus await scos rol
